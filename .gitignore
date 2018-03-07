@@ -1,0 +1,15 @@
+.idea
+.vscode
+.DS_Store
+.env
+
+
+__pycache__
+
+
+.python-version
+
+
+*.pyc
+*.swp
+*.log
