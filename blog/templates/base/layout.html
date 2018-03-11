@@ -13,23 +13,36 @@
 
 <body class="d-flex flex-column justify-content-between">
     <!-- header navbar -->
-    {% block header %} 
-        {% include "base/header.html" %} 
-    {% endblock %}
+    {% block header %} {% include "base/header.html" %} {% endblock %}
     <!-- main content -->
-    {% block content %} 
-    {% endblock %}
+    {% block content %} {% endblock %}
     <!-- footer copyright-->
-    {% block footer %} 
-        {% include "base/footer.html" %} 
-    {% endblock %}
+    {% block footer %} {% include "base/footer.html" %} {% endblock %}
     </div>
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
     <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
     <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+    <script>
+        //动态更新导航条
+        $(window).scroll(function () {
+            if ($(window).width() < 768) {
+                if ($(window).scrollTop() > 0) {
+                    $('.navbar .navbar-brand').slideUp();
+                }
+                if ($(window).scrollTop() == 0) {
+                    $('.navbar .navbar-brand').slideDown();
+                }
+            }
+        });
+        $(window).resize(function(){
+            if ($(window).width() >= 768) {
+                $('.navbar .navbar-brand').css({"height":46, "display":"inline-block"});
+            }
+        });
+    </script>
 </body>
 
 </html>
