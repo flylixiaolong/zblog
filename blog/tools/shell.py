@@ -11,6 +11,7 @@ import os
 import click
 from flask.cli import with_appcontext
 
+
 @click.command('shell', short_help='Runs a shell in the app context.')
 @with_appcontext
 def shell_command():
