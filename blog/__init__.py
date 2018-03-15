@@ -1,5 +1,5 @@
 """
-    author: Xiaolong Li
+    author: lixl
     email: fly_lxl@foxmail.com
     date: Mar 3, 2018
 """
@@ -25,8 +25,10 @@ def create_app():
     def make_shell_contex():
         return dict(db=db)
 
+    # include model
+    from blog import models
     # register blueprint
-    from .views import home
+    from blog.views import home
     app.register_blueprint(home)
 
     return app
