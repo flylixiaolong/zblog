@@ -3,7 +3,5 @@
 """
 
 from blog import create_app
-import config
 
-app = create_app(config.Config)
-
+app = create_app()

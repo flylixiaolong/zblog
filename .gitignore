@@ -3,11 +3,10 @@
 .DS_Store
 .env
 
-
 __pycache__
-
-
 .python-version
+dist
+Blog.egg-info
 
 
 *.pyc
