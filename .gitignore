@@ -8,6 +8,7 @@ __pycache__
 dist
 Blog.egg-info
 migrations
+mysql
 
 
 *.pyc
