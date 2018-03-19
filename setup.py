@@ -9,7 +9,7 @@ setup(
     ],
     entry_points={
         'flask.commands': [
-            'shell=blog.tools.shell:shell_command'
+            'shell=blog.tools.commands.shell:shell_command'
         ]
     }
 )
