@@ -34,6 +34,10 @@ def create_app():
     from blog import events
     # register blueprint
     from blog.views import home
+    from blog.admin.views import admin
     app.register_blueprint(home)
+    app.register_blueprint(admin)
+
+    print(app.url_map)
 
     return app
