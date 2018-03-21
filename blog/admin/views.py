@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request
 from flask_login import login_user
 
 admin = Blueprint('admin', __name__, url_prefix='/admin', template_folder='templates')
