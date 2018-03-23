@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash
+from flask import Blueprint, render_template, request, flash, redirect
 from flask_login import login_user
 from blog.models import Admin
 from blog import db
@@ -14,7 +14,7 @@ def login():
         user = db.session.query(Admin).filter(Admin.user_name==user_name).one_or_none()
         if(user and user.verify_password(password)):
             login_user(user)
-            return '<p> hello you! <p>'
+            return redirect('/')
         flash('Invalid username or password.')
     return render_template('admin/login.html')
         
