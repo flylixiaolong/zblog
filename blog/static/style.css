@@ -24,3 +24,11 @@ body {
 .footer {
     height: 60px;
 }
+
+.overflow-hidden{
+    overflow: hidden;
+}
+
+.overflow-scroll{
+    overflow: scroll;
+}
