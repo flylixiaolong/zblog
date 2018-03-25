@@ -7,29 +7,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
-    {% block style %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> 
-    {% endblock %}
-    {% endblock %}
+        crossorigin="anonymous"> {% block style %}
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body {
+            overflow: hidden;
+        }
+
+        .header {
+            box-shadow: 0px 1px 5px #444444;
+        }
+    </style>
+    {% endblock %} {% endblock %}
 </head>
 
-<body class="d-flex align-items-md-center bg-dark">
-    <!-- header navbar -->
-    {% block header %} {% include "admin/base/header.html" %} {% endblock %}
-    <!-- main content -->
-    {% block content %} {% endblock %}
-    <!-- footer copyright-->
-    {% block footer %} {% include "admin/base/footer.html" %} {% endblock %}
+<body class="container-fluid d-flex flex-column h-100 bg-light">
+    <div class="row sticky-top bg-info header">
+        <!-- header navbar -->
+        {% block header %} {% include "admin/base/header.html" %} {% endblock %}
+    </div>
+    <div class="row h-100">
+        <div class="col-2 h-100 bg-info" style="overflow:scroll">
+            <!-- side navbar -->
+            {% block asider %} {% include "admin/base/asider.html" %} {% endblock %}
+        </div>
+        <div class="col-10 h-100 bg-light" style="overflow:scroll">
+            <!-- main content -->
+            {% block content %} {% endblock %}
+        </div>
+        <!-- footer copyright-->
+        {% block footer %} {% include "admin/base/footer.html" %} {% endblock %}
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
     <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
     <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-    {% block javascript %}
-    {% endblock %}
+        crossorigin="anonymous"></script> {% block javascript %} {% endblock %}
 </body>
 
 </html>

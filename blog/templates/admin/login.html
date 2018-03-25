@@ -1,53 +1,50 @@
-{% extends "admin/base/layout.html" %} 
-{% block content %}
-    <div class="container">
-        <div class="row justify-content-center h-100">
-            <div class="col-md-4 mx-0 px-0 bg-white">
-                <div class="text-center bg-info" style="height: 120px; margin-bottom:100px;">
-                    <div style="padding-top: 70px">
-                        <img src="{{ url_for('static', filename='images/C_Geek.png') }}" width="100" height="100" alt="">
-                    </div>
-                    <h3>
-                        <span class="badge">
-                            C_Geek's Blog
-                        </span>
-                    </h3>
-
-                </div>
-                <form class="m-4" method="POST">
-                    <div class="form-group">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">
-                                    <i class="fas fa-user"></i>
-                                </span>
-                            </div>
-                            <input type="text" name="user_name" class="form-control" placeholder="用户名">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">
-                                    <i class="fas fa-lock"></i>
-                                </span>
-                            </div>
-                            <input type="password" name="password" class="form-control" placeholder="密码">
-                        </div>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" name="remember-me" class="form-check-input" id="remember-me">
-                        <label class="form-check-label" for="remember-me">Remember me?</label>
-                    </div>
-                    {% for message in get_flashed_messages() %}
-                    <div class="alert alert-warning">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        {{ message }}
-                    </div>
-                    {% endfor %}
-                    <button type="submit" class="btn btn-primary btn-block mt-5">Submit</button>
-                </form>
+{% extends "admin/base/layout.html" %} {% block header %} {% endblock %} {% block asider %} {% endblock %} {% block content
+%}
+<div class="row justify-content-center h-100">
+    <div class="col-md-4 mx-0 my-auto px-0 bg-white">
+        <div class="text-center bg-info" style="height: 120px; margin-bottom:100px;">
+            <div style="padding-top: 70px">
+                <img src="{{ url_for('static', filename='images/C_Geek.png') }}" width="100" height="100" alt="">
             </div>
+            <h3>
+                <span class="badge">
+                    C_Geek's Blog
+                </span>
+            </h3>
         </div>
+        <form class="m-4" method="POST">
+            <div class="form-group">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            <i class="fas fa-user"></i>
+                        </span>
+                    </div>
+                    <input type="text" name="user_name" class="form-control" placeholder="用户名">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                    </div>
+                    <input type="password" name="password" class="form-control" placeholder="密码">
+                </div>
+            </div>
+            <div class="form-check">
+                <input type="checkbox" name="remember-me" class="form-check-input" id="remember-me">
+                <label class="form-check-label" for="remember-me">Remember me?</label>
+            </div>
+            {% for message in get_flashed_messages() %}
+            <div class="alert alert-warning">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ message }}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary btn-block mt-5">Submit</button>
+        </form>
     </div>
+</div>
 {% endblock %}

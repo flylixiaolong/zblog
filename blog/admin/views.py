@@ -14,7 +14,12 @@ def login():
         user = db.session.query(Admin).filter(Admin.user_name==user_name).one_or_none()
         if(user and user.verify_password(password)):
             login_user(user)
-            return redirect('/')
+            return redirect('/admin/index')
         flash('Invalid username or password.')
     return render_template('admin/login.html')
+
+
+@admin.route('/index', methods=['GET'])
+def index():
+    return render_template('admin/index.html')
         
