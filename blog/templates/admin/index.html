@@ -1,6 +1,5 @@
-{% extends "admin/base/layout.html" %}
-{% block content %}
-<main role="main" class="">
+{% extends "admin/base/layout.html" %} {% block content %}
+<div role="main" class="">
     <div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
         <div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
             <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>
@@ -155,5 +154,15 @@
             </tbody>
         </table>
     </div>
-</main>
-{% endblock %}
+</div>
+{% endblock %} {% block javascript %}
+<script>
+    $(document).ready(function () {
+        $(".sidebar li>a").bind("click", function () {
+            var elem = $(this).parent();
+            sidebar = elem.parent()[0].querySelectorAll(".active");
+            elem.toggleClass("active");
+            $(sidebar).removeClass("active");
+        })
+    })
+</script> {% endblock %}

@@ -1,6 +1,7 @@
 html {
     height: 100%;
 }
+
 body {
     min-height: 100%;
     margin: 0;
@@ -9,15 +10,17 @@ body {
 }
 
 .header {
+    color: rgb(0, 0, 0);
     box-shadow: 0px 1px 5px #444444;
 }
 
-.content{
-    margin-top: 20px; 
+.content {
+    padding-top: 20px;
 }
 
-.content .card, .content .media{
-    margin-bottom: 20px; 
+.content .card,
+.content .media {
+    margin-bottom: 20px;
     background: white;
 }
 
@@ -25,10 +28,88 @@ body {
     height: 60px;
 }
 
-.overflow-hidden{
+.overflow-hidden {
     overflow: hidden;
 }
 
-.overflow-scroll{
+.overflow-scroll {
     overflow: scroll;
 }
+
+
+/* sidebar */
+
+ul.sidebar,
+.sidebar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+ul.sidebar li>a,
+.sidebar ul>li>a {
+    position: relative;
+    line-height: 46px;
+    height: 46px;
+    display: block;
+}
+
+ul.sidebar>li>a,
+.sidebar>ul>li>a {
+    padding: 0 1em;
+}
+
+ul.sidebar li>ul>li>a,
+.sidebar ul>li>ul>li>a {
+    padding-left: 3rem;
+}
+
+ul.sidebar li.active,
+.sidebar ul>li.active,
+ul.sidebar li>a:hover,
+.sidebar ul>li>a:hover {
+    background-color: rgba(0, 0, 0, 0.1)
+}
+
+ul.sidebar li.active>a::after,
+.sidebar ul>li.active>a::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    border-left-color: rgb(0, 255, 0);
+    border-left-width: 4px;
+    border-left-style: solid;
+}
+
+ul.sidebar li>ul,
+.sidebar ul>li>ul {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s
+}
+
+ul.sidebar li.active>ul,
+.sidebar ul>li.active>ul {
+    max-height: 500px;
+}
+
+ul.sidebar li>a>.angle,
+.sidebar ul>li>a>.angle {
+    float: right;
+    transition-duration: 0.5s
+}
+
+ul.sidebar li.active>a>.angle,
+.sidebar ul>li.active>a>.angle {
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+/**/
+.sidebar{
+    box-shadow: 1px 0px 5px #444444;
+}
+/* sidebar */
