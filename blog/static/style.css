@@ -49,8 +49,8 @@ ul.sidebar,
 ul.sidebar li>a,
 .sidebar ul>li>a {
     position: relative;
-    line-height: 46px;
-    height: 46px;
+    line-height: 56px;
+    height: 56px;
     display: block;
 }
 

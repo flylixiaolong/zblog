@@ -23,3 +23,7 @@ def login():
 def index():
     return render_template('admin/index.html')
         
+@admin.route('/profile', methods=['GET'])
+def profile():
+    return render_template('admin/profile.html')
+        
