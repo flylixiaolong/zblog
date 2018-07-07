@@ -35,9 +35,9 @@ def create_app():
     # register blueprint
     from blog.views import home
     from blog.admin.views import admin
+    from blog.posts.views import posts
     app.register_blueprint(home)
     app.register_blueprint(admin)
-
-    print(app.url_map)
+    app.register_blueprint(posts)
 
     return app

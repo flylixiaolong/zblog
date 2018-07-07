@@ -16,12 +16,12 @@ def login():
             login_user(user)
             return redirect('/admin/index')
         flash('Invalid username or password.')
-    return render_template('admin/login.html')
+    return render_template('/admin/login.html')
 
 
 @admin.route('/index', methods=['GET'])
 def index():
-    return render_template('admin/index.html')
+    return render_template('index.html')
         
 @admin.route('/profile', methods=['GET'])
 def profile():
