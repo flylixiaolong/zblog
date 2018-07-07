@@ -26,4 +26,3 @@ def index():
 @admin.route('/profile', methods=['GET'])
 def profile():
     return render_template('admin/profile.html')
-        
