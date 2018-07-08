@@ -73,21 +73,54 @@ class Admin(AbsUser):
         return True
 
 
-class Blog(db.Model):
-    __tablename__ = 'blogs'
+class Post(db.Model):
+    __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(64), nullable=False)
     summary = db.Column(db.String(256))
     content = db.Column(db.Text, nullable=False)
     created_id = db.Column(db.ForeignKey('auth_admin.id'))
+    catalog_id = db.Column(db.ForeignKey('catalogs.id'))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    tags = db.relationship('Tag', secondary='post_tags', lazy='select')
+    comments = db.relationship('Comment', lazy='select', backref=db.backref('post', lazy='joined'))
 
 
 class Tag(db.Model):
     __tablename__ = 'tags'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), nullable=False)
+    tag = db.Column(db.String(64), nullable=False)
     created_id = db.Column(db.ForeignKey('auth_admin.id'))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class Catalog(db.Model):
+    __tablename__ = 'catalogs'
+    id = db.Column(db.Integer, primary_key=True)
+    catalog = db.Column(db.String(64), nullable=False)
+    created_id = db.Column(db.ForeignKey('auth_admin.id'))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    posts = db.relationship('Post', lazy='select', backref=db.backref('posts', lazy='joined'))
+
+
+class Comment(db.Model):
+    __tablename__ = 'comments'
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String(64), nullable=False)
+    post_id = db.Column(db.ForeignKey('posts.id'))
+    reply_id = db.Column(db.ForeignKey('comments.id'))
+    name = db.Column(db.String(64), nullable=False)
+    email = db.Column(db.String(64), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+post_tags = db.Table('post_tags',
+    db.Column('posts_id', db.Integer, db.ForeignKey('posts.id'), primary_key=True),
+    db.Column('tags_id', db.Integer, db.ForeignKey('tags.id'), primary_key=True)
+)
