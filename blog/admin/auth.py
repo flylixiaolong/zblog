@@ -4,7 +4,7 @@ from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth, MultiAuth
 
 from applications.auth.models import Admin, AnonymousUser
 from .errors import unauthorized
-from . import admin_api, ad
+from . import admin_api, admin
 
 basic_auth = HTTPBasicAuth()
 token_auth = HTTPTokenAuth(scheme='JWT')
@@ -43,8 +43,12 @@ def auth_error():
 
 
 # when you use this all request will be auth
-@api.before_request
+@admin_api.before_request
 @multi_auth.login_required
 def before_request():
     if request.method != 'OPTIONS' and g.current_user.is_anonymous:
         return unauthorized('Unauthorized user')
+
+@admin.before_request
+def before_request():
+    pass
