@@ -1,7 +1,21 @@
 from flask import jsonify
-from applications.error import ResourceError
-from . import admin_api, rest_api
 
+class ResourceError(Exception):
+    status_code = 404
+    message = 'Resource Not Found'
+
+    def __init__(self, message, status_code=None, **kwargs):
+        super().__init__()
+        if message:
+            self.message = message
+        if status_code is not None:
+            self.status_code = status_code
+        self.rv = kwargs
+
+    def to_dict(self):
+        rv = self.rv
+        rv['message'] = self.message
+        return rv
 
 class ValidationError(ValueError):
     pass
@@ -24,15 +38,3 @@ def forbidden(message):
     response.status_code = 403
     return response
 
-
-@api.errorhandler(ResourceError)
-def handle_resource_not_found(error):
-    response = jsonify(error.to_dict())
-    response.status_code = error.status_code
-    return response
-
-
-@api.errorhandler(404)
-def handle_url_not_found(error):
-    response = jsonify({"error": "Resource Not Found"})
-    return response

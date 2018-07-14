@@ -2,7 +2,7 @@ from flask import g, request
 
 from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth, MultiAuth
 
-from applications.auth.models import Admin, AnonymousUser
+from ..models import Admin, AnonymousUser
 from .errors import unauthorized
 from . import admin_api, admin
 

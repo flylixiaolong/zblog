@@ -13,3 +13,15 @@ def auth_token():
         return jsonify({'token': g.current_user.generate_auth_token(), 'expiration': 3600})
     else:
         return jsonify({'auth': 'success'})
+
+@admin_api.errorhandler(ResourceError)
+def handle_resource_not_found(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
+
+
+@admin_api.errorhandler(404)
+def handle_url_not_found(error):
+    response = jsonify({"error": "Resource Not Found"})
+    return response
