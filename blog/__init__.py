@@ -27,15 +27,13 @@ def create_app():
         return dict(db=db)
 
     # include model
-    from blog import models
-    from blog import events
+    from . import models
+    from . import events
     # register blueprint
-    from blog.views import home
-    from blog.admin.views import admin
-    from blog.admin.api import admin_api
-    from blog.posts.views import posts
+    from .views import home
+    from .admin import admin_api
+    from .posts.views import posts
     app.register_blueprint(home)
-    app.register_blueprint(admin)
     app.register_blueprint(admin_api, url_prefix='/api/admin')
     app.register_blueprint(posts)
     print(app.url_map)

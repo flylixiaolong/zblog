@@ -8,19 +8,19 @@ from flask import current_app
 from flask_login import UserMixin, AnonymousUserMixin
 from werkzeug.security import check_password_hash
 from itsdangerous import JSONWebSignatureSerializer as JWT
+from sqlalchemy import Column
 
 from datetime import datetime
 
-from blog import db
-from blog import login_manager
+from . import db
 
 
-@login_manager.user_loader
-def load_user(user_id):
-    return Admin.query.get(int(user_id))
+class AnonymousUser(AnonymousUserMixin):
+    def has_perms(self, perms):
+        return False
 
-
-from sqlalchemy import Column
+    def is_admin(self):
+        return False
 
 
 class AbsUser(UserMixin, db.Model):

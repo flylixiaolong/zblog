@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, request, flash, redirect
 from flask_login import login_user
-from blog.models import Admin
-from blog import db
+from .auth import unauthorized, multi_auth
+from ..models import Admin
+from .. import db
 
 admin_api = Blueprint('admin_api', __name__, url_prefix='/api/admin', template_folder='templates')
 
@@ -14,14 +15,10 @@ def auth_token():
     else:
         return jsonify({'auth': 'success'})
 
-@admin_api.errorhandler(ResourceError)
-def handle_resource_not_found(error):
-    response = jsonify(error.to_dict())
-    response.status_code = error.status_code
-    return response
 
-
-@admin_api.errorhandler(404)
-def handle_url_not_found(error):
-    response = jsonify({"error": "Resource Not Found"})
-    return response
+# when you use this all request will be auth
+@admin_api.before_request
+@multi_auth.login_required
+def before_request():
+    if request.method != 'OPTIONS' and g.current_user.is_anonymous:
+        return unauthorized('Unauthorized user')
