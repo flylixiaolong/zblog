@@ -2,7 +2,8 @@ from flask import Blueprint, jsonify
 from flask import g, request
 from flask_login import login_user
 from .auth import unauthorized, multi_auth
-from ..models import Admin
+from .parser import parser_catalog
+from ..models import Admin, Catalog
 from .. import db
 
 admin_api = Blueprint('admin_api', __name__, url_prefix='/api/admin', template_folder='templates')
@@ -23,3 +24,19 @@ def auth_token():
 def before_request():
     if request.method != 'OPTIONS' and g.current_user.is_anonymous:
         return unauthorized('Unauthorized user')
+
+
+@admin_api.route('/catalog', methods=["POST"])
+def create_catalog():
+    args = parser_catalog.parse_args()
+    args['created_id'] = g.current_user.id
+    catalog = Catalog(**args)
+    db.session.add(catalog)
+    db.session.commit()
+    return jsonify(args)
+
+
+@admin_api.route('/catalog', methods=["GET"])
+def list_catalog():
+    args = parser_catalog.parse_args()
+    return args
