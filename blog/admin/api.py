@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, request, flash, redirect
+from flask import Blueprint, jsonify
+from flask import g, request
 from flask_login import login_user
 from .auth import unauthorized, multi_auth
 from ..models import Admin

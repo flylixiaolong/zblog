@@ -7,7 +7,7 @@
 from flask import current_app
 from flask_login import UserMixin, AnonymousUserMixin
 from werkzeug.security import check_password_hash
-from itsdangerous import JSONWebSignatureSerializer as JWT
+from itsdangerous import TimedJSONWebSignatureSerializer as JWT
 from sqlalchemy import Column
 
 from datetime import datetime
