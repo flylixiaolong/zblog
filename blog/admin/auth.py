@@ -13,8 +13,8 @@ multi_auth = MultiAuth(basic_auth, token_auth)
 def verify_password(email, password):
     if request.method == 'POST':
         json_dict = request.get_json(cache=True) or request.form
-        email = json_dict['email']
-        password = json_dict['password']
+        email = getattr(json_dict, 'email', '')
+        password = getattr(json_dict, 'password', '')
     if email == '':
         g.current_user = AnonymousUser()
         return True
