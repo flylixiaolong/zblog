@@ -91,7 +91,7 @@ class Post(db.Model):
 class Tag(db.Model):
     __tablename__ = 'tags'
     id = db.Column(db.Integer, primary_key=True)
-    tag = db.Column(db.String(64), nullable=False)
+    tag = db.Column(db.String(64), nullable=False, unique=True)
     created_id = db.Column(db.ForeignKey('auth_admin.id'))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
@@ -100,7 +100,7 @@ class Tag(db.Model):
 class Catalog(db.Model):
     __tablename__ = 'catalogs'
     id = db.Column(db.Integer, primary_key=True)
-    catalog = db.Column(db.String(64), nullable=False)
+    catalog = db.Column(db.String(64), nullable=False, unique=True)
     created_id = db.Column(db.ForeignKey('auth_admin.id'))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
