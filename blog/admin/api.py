@@ -3,6 +3,7 @@ from flask import g, request
 from werkzeug.exceptions import BadRequest, NotFound
 from flask_login import login_user
 from .auth import multi_auth
+from .service import create_catalog
 from .parser import parser_catalog, parser_account
 from ..models import Admin, Catalog
 from ..errors import bad_request, unauthorized, not_found
@@ -42,13 +43,13 @@ def auth_token():
 
 
 @admin_api.route('/catalog', methods=["POST"])
-def create_catalog():
+def create():
     args = parser_catalog.parse_args()
     args['created_id'] = g.current_user.id
-    catalog = Catalog(**args)
-    db.session.add(catalog)
-    db.session.commit()
-    return jsonify(args)
+    created, catalog = create_catalog(**args)
+    if(created):
+        return jsonify(catalog)
+    return jsonify({'message': {'catalog': '分类已经存在'}, 'error': 'already existed'})
 
 
 @admin_api.route('/catalog', methods=["GET"])
