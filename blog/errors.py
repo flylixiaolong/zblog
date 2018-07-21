@@ -16,3 +16,8 @@ def forbidden(message):
     response = jsonify({'error': 'forbidden', 'message': message})
     response.status_code = 403
     return response
+
+def not_found(message):
+    response = jsonify({'error': 'not found', 'message': message})
+    response.status_code = 404
+    return response

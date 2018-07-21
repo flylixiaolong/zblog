@@ -7,7 +7,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-
+from werkzeug.exceptions import NotFound
+from .errors import not_found
 
 import os
 
@@ -26,6 +27,11 @@ def create_app():
     def make_shell_contex():
         return dict(db=db)
 
+    @app.errorhandler(NotFound)
+    def handler_not_found(e):
+        message = '访问地址错误'
+        return not_found(message)
+
     # include model
     from . import models
     from . import events
@@ -36,6 +42,5 @@ def create_app():
     app.register_blueprint(home)
     app.register_blueprint(admin_api, url_prefix='/api/admin')
     app.register_blueprint(posts)
-    print(app.url_map)
 
     return app
