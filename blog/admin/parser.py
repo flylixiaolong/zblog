@@ -9,8 +9,8 @@ from ..utils import email
 
 # 用户检测
 parser_account = reqparse.RequestParser()
-parser_account.add_argument('email', required=True, trim=True, type=email)
-parser_account.add_argument('password', required=True, trim=True)
+parser_account.add_argument('email', required=True, trim=True, type=email, help='请输入正确的邮箱')
+parser_account.add_argument('password', required=True, trim=True, help='请输入密码')
 
 # 博文分类
 parser_catalog = reqparse.RequestParser()

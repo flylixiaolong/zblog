@@ -1,9 +1,11 @@
 from flask import Blueprint, jsonify
 from flask import g, request
+from werkzeug.exceptions import BadRequest
 from flask_login import login_user
-from .auth import unauthorized, multi_auth
+from .auth import multi_auth
 from .parser import parser_catalog, parser_account
 from ..models import Admin, Catalog
+from ..errors import bad_request, unauthorized
 from .. import db
 
 admin_api = Blueprint('admin_api', __name__, url_prefix='/api/admin', template_folder='templates')
@@ -15,10 +17,16 @@ def before_request():
     if request.method != 'OPTIONS' and g.current_user.is_anonymous and request.path != '/api/admin/token':
         return unauthorized('Unauthorized user')
 
+# 400错误处理
+@admin_api.errorhandler(BadRequest)
+def handle_bad_request(e):
+    message = e.data and e.data['message'] or e.message
+    return bad_request(message)
 
+# 获取认证token
 @admin_api.route('/token', methods=['GET', 'POST'])
 def auth_token():
-    parser_account.parse_args()
+    args = parser_account.parse_args()
     if g.current_user.is_anonymous:
         return unauthorized('Invalid credentials')
     if not g.token_used:
