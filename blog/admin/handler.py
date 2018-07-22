@@ -3,7 +3,6 @@ from werkzeug import exceptions
 from ..errors import unauthorized, bad_request, not_found, forbidden
 from .api import admin_api
 from .auth import multi_auth
-from collections import Iterable
 
 # when you use this all request will be auth
 @admin_api.before_request
@@ -16,7 +15,7 @@ def before_request():
 def after_request(response):
     if response.is_json:
         data = response.get_json()
-        if isinstance(data, Iterable) or not data.get('error', None):
+        if isinstance(data, (tuple, list, set)) or not data.get('error', None):
             ret = {'data': data}
             ret['success'] = 'response ok'
             return jsonify(ret)

@@ -3,10 +3,13 @@ from flask import g, request, json
 from flask_login import login_user
 from flask_restful import marshal, fields
 from .auth import multi_auth
-from .fields import catalog_fields, catalogs_fields
-from .service import create_catalog, query_catalogs
+from .fields import catalog_fields
+from .fields import tag_fields
+from .service import create_catalog, query_catalogs, query_catalog_by_id
+from .service import create_tag, query_tags, query_tag_by_id
 from .parser import parser_catalog, parser_account
-from ..models import Admin, Catalog
+from .parser import parser_tag
+from ..models import Admin
 from ..errors import unauthorized
 from .. import db
 
@@ -26,7 +29,7 @@ def auth_token():
 
 
 @admin_api.route('/catalog', methods=["POST"])
-def create():
+def new_catalog():
     args = parser_catalog.parse_args()
     args['created_id'] = g.current_user.id
     created, catalog = create_catalog(**args)
@@ -36,6 +39,38 @@ def create():
 
 
 @admin_api.route('/catalog', methods=["GET"])
-def list_catalog():
+def list_catalogs():
     catalogs = query_catalogs()
     return jsonify(marshal(catalogs, catalog_fields))
+
+
+@admin_api.route('/catalog/<int:id>', methods=["GET"])
+def get_catalog(id):
+    catalog = query_catalog_by_id(id)
+    if(not catalog):
+        return not_found('资源不存在')
+    return jsonify(marshal(catalog, catalog_fields))
+
+
+@admin_api.route('/tag', methods=["POST"])
+def new_tag():
+    args = parser_tag.parse_args()
+    args['created_id'] = g.current_user.id
+    created, tag = create_tag(**args)
+    if(created):
+        return jsonify(marshal(tag, tag_fields))
+    return jsonify({'message': {'tag': '分类已经存在'}, 'error': 'already existed'})
+
+
+@admin_api.route('/tag', methods=["GET"])
+def list_tags():
+    tags = query_tags()
+    return jsonify(marshal(tags, tag_fields))
+
+
+@admin_api.route('/tag/<int:id>', methods=["GET"])
+def get_tag(id):
+    tag = query_tag_by_id(id)
+    if(not tag):
+        return not_found('资源不存在')
+    return jsonify(marshal(tag, tag_fields))
