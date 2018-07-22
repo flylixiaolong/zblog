@@ -15,3 +15,7 @@ def create_catalog(catalog, created_id):
     db.session.add(catalog)
     db.session.commit()
     return True, catalog
+
+def query_catalogs():
+    catalogs = db.session.query(Catalog).all()
+    return catalogs

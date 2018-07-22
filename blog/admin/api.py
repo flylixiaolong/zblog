@@ -1,10 +1,10 @@
 from flask import Blueprint, jsonify
 from flask import g, request, json
 from flask_login import login_user
-from flask_restful import marshal
+from flask_restful import marshal, fields
 from .auth import multi_auth
-from .fields import catalog_fields
-from .service import create_catalog
+from .fields import catalog_fields, catalogs_fields
+from .service import create_catalog, query_catalogs
 from .parser import parser_catalog, parser_account
 from ..models import Admin, Catalog
 from ..errors import unauthorized
@@ -37,5 +37,5 @@ def create():
 
 @admin_api.route('/catalog', methods=["GET"])
 def list_catalog():
-    args = parser_catalog.parse_args()
-    return args
+    catalogs = query_catalogs()
+    return jsonify(marshal(catalogs, catalog_fields))
