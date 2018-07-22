@@ -36,4 +36,8 @@ def verify_token(token):
 
 @basic_auth.error_handler
 def auth_error():
-    return unauthorized('Invalid credentials')
+    return unauthorized('认证失败')
+
+@token_auth.error_handler
+def auth_error():
+    return unauthorized('认证失败')

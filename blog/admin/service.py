@@ -8,7 +8,6 @@ def query_catalog_by_name(catalog):
 
 def create_catalog(catalog, created_id):
     db_catalog = query_catalog_by_name(catalog)
-    print(db_catalog)
     if(db_catalog):
         return False, db_catalog
 
