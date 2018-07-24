@@ -16,7 +16,10 @@ parser_account.add_argument('password', required=True, trim=True, help='请输�
 parser_catalog = reqparse.RequestParser()
 parser_catalog.add_argument('catalog', required=True, trim=True)
 
-
 # 博文标签
+parser_tag = reqparse.RequestParser()
+parser_tag.add_argument('tag', required=True, trim=True)
+
+# 博客检测
 parser_tag = reqparse.RequestParser()
 parser_tag.add_argument('tag', required=True, trim=True)

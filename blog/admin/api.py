@@ -74,3 +74,27 @@ def get_tag(id):
     if(not tag):
         return not_found('资源不存在')
     return jsonify(marshal(tag, tag_fields))
+
+
+@admin_api.route('/post', methods=["POST"])
+def new_post():
+    args = parser_post.parse_args()
+    args['created_id'] = g.current_user.id
+    created, post = create_post(**args)
+    if(created):
+        return jsonify(marshal(post, post_fields))
+    return jsonify({'message': {'post': '分类已经存在'}, 'error': 'already existed'})
+
+
+@admin_api.route('/post', methods=["GET"])
+def list_posts():
+    posts = query_posts()
+    return jsonify(marshal(posts, post_fields))
+
+
+@admin_api.route('/post/<int:id>', methods=["GET"])
+def get_post(id):
+    post = query_post_by_id(id)
+    if(not post):
+        return not_found('资源不存在')
+    return jsonify(marshal(post, post_fields))
