@@ -8,7 +8,7 @@ from .fields import tag_fields
 from .service import create_catalog, query_catalogs, query_catalog_by_id
 from .service import create_tag, query_tags, query_tag_by_id
 from .parser import parser_catalog, parser_account
-from .parser import parser_tag
+from .parser import parser_tag, parser_post
 from ..models import Admin
 from ..errors import unauthorized
 from .. import db
@@ -79,6 +79,7 @@ def get_tag(id):
 @admin_api.route('/post', methods=["POST"])
 def new_post():
     args = parser_post.parse_args()
+    print(args)
     args['created_id'] = g.current_user.id
     created, post = create_post(**args)
     if(created):

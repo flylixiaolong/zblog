@@ -21,5 +21,9 @@ parser_tag = reqparse.RequestParser()
 parser_tag.add_argument('tag', required=True, trim=True)
 
 # 博客检测
-parser_tag = reqparse.RequestParser()
-parser_tag.add_argument('tag', required=True, trim=True)
+parser_post = reqparse.RequestParser()
+parser_post.add_argument('title', required=True, trim=True)
+parser_post.add_argument('summary', required=True, trim=True)
+parser_post.add_argument('content', required=True, trim=True)
+parser_post.add_argument('catalog', required=True, type=int)
+parser_post.add_argument('tags', type=int, action='append')
