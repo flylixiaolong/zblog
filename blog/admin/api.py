@@ -6,11 +6,12 @@ from .auth import multi_auth
 from .fields import catalog_fields
 from .fields import tag_fields
 from .service import create_catalog, query_catalogs, query_catalog_by_id
-from .service import create_tag, query_tags, query_tag_by_id
+from .service import create_tag, query_tags, query_tags_by_ids, query_tag_by_id
+from .service import create_post, query_posts, query_post_by_id, query_post_by_title
 from .parser import parser_catalog, parser_account
 from .parser import parser_tag, parser_post
 from ..models import Admin
-from ..errors import unauthorized
+from ..errors import unauthorized, not_found
 from .. import db
 
 admin_api = Blueprint('admin_api', __name__, url_prefix='/api/admin', template_folder='templates')
@@ -78,8 +79,19 @@ def get_tag(id):
 
 @admin_api.route('/post', methods=["POST"])
 def new_post():
+    message = {}
     args = parser_post.parse_args()
-    print(args)
+    db_catalog = query_catalog_by_id(args.catalog)
+    db_tags = query_tags_by_ids(args.tags)
+    if not db_catalog:
+        message['catalog'] = '`{0}`查询分类失败'.format(args.catalog)
+    if len(db_tags) != len(args.tags):
+        message['tags'] = '`{0}`查询标签失败'.format(args.tags)
+    db_post = query_post_by_title(args.title)
+    if db_post:
+        message['title'] = '标题已存在'
+    if message:
+        return jsonify({'message': message, 'error': 'bad request'}), 400
     args['created_id'] = g.current_user.id
     created, post = create_post(**args)
     if(created):
