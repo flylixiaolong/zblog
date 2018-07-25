@@ -5,6 +5,7 @@ from flask_restful import marshal, fields
 from .auth import multi_auth
 from .fields import catalog_fields
 from .fields import tag_fields
+from .fields import post_fields
 from .service import create_catalog, query_catalogs, query_catalog_by_id
 from .service import create_tag, query_tags, query_tags_by_ids, query_tag_by_id
 from .service import create_post, query_posts, query_post_by_id, query_post_by_title

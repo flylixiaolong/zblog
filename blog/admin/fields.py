@@ -20,6 +20,11 @@ tag_fields = {
     'updated_at': fields.DateTime(dt_format='iso8601')
 }
 
-tags_fields = {
-    'data': fields.List(fields.Nested(tag_fields))
+post_fields = {
+    'id': fields.Integer,
+    'title': fields.String,
+    'summary': fields.String,
+    'content': fields.String,
+    'created_at': fields.DateTime(dt_format='iso8601'),
+    'updated_at': fields.DateTime(dt_format='iso8601')
 }
