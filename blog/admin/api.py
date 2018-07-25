@@ -11,7 +11,7 @@ from .service import create_post, query_posts, query_post_by_id, query_post_by_t
 from .parser import parser_catalog, parser_account
 from .parser import parser_tag, parser_post
 from ..models import Admin
-from ..errors import unauthorized, not_found
+from ..errors import unauthorized, not_found, bad_request
 from .. import db
 
 admin_api = Blueprint('admin_api', __name__, url_prefix='/api/admin', template_folder='templates')
@@ -91,8 +91,10 @@ def new_post():
     if db_post:
         message['title'] = '标题已存在'
     if message:
-        return jsonify({'message': message, 'error': 'bad request'}), 400
+        return bad_request(message)
     args['created_id'] = g.current_user.id
+    args['catalog'] = db_catalog
+    args['tags'] = db_tags
     created, post = create_post(**args)
     if(created):
         return jsonify(marshal(post, post_fields))

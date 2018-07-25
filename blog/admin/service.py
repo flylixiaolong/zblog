@@ -56,9 +56,7 @@ def query_post_by_title(title):
     return post
 
 def create_post(title, summary, content, created_id, catalog, tags):
-    if(db_post):
-        return False, db_post
-    post = Post(post = post, created_id = created_id)
+    post = Post(title=title, summary=summary, content=content, created_id=created_id, catalog=catalog, tags=tags)
     db.session.add(post)
     db.session.commit()
     return True, post
