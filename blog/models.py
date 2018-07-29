@@ -86,7 +86,7 @@ class Post(db.Model):
 
     tags = db.relationship('Tag', secondary='post_tags', lazy='select')
     catalog = db.relationship('Catalog', back_populates='posts')
-    comments = db.relationship('Comment', lazy='select', backref=db.backref('post', lazy='joined'))
+    comments = db.relationship('Comment', back_populates='post')
 
 
 class Tag(db.Model):
@@ -119,6 +119,8 @@ class Comment(db.Model):
     email = db.Column(db.String(64), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    post = db.relationship('Post', back_populates='comments')
 
 
 post_tags = db.Table('post_tags',
