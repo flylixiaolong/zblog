@@ -9,9 +9,11 @@ from .fields import post_fields
 from .service import create_catalog, query_catalogs, query_catalog_by_id
 from .service import create_tag, query_tags, query_tags_by_ids, query_tag_by_id
 from .service import create_post, query_posts, query_post_by_id, query_post_by_title
-from .parser import parser_catalog, parser_account
+from .service import total_posts
+from .parser import parser_catalog, parser_account, parser_pagination
 from .parser import parser_tag, parser_post
 from ..models import Admin
+from ..utils import paging
 from ..errors import unauthorized, not_found, bad_request
 from .. import db
 
@@ -37,7 +39,7 @@ def new_catalog():
     created, catalog = create_catalog(**args)
     if(created):
         return jsonify(marshal(catalog, catalog_fields))
-    return jsonify({'message': {'catalog': '分类已经存在'}, 'error': 'already existed'})
+    return jsonify({'error': {'catalog': '分类已经存在'}, 'message': 'already existed'})
 
 
 @admin_api.route('/catalog', methods=["GET"])
@@ -61,7 +63,7 @@ def new_tag():
     created, tag = create_tag(**args)
     if(created):
         return jsonify(marshal(tag, tag_fields))
-    return jsonify({'message': {'tag': '分类已经存在'}, 'error': 'already existed'})
+    return jsonify({'error': {'tag': '分类已经存在'}, 'message': 'already existed'})
 
 
 @admin_api.route('/tag', methods=["GET"])
@@ -80,29 +82,32 @@ def get_tag(id):
 
 @admin_api.route('/post', methods=["POST"])
 def new_post():
-    message = {}
+    error = {}
     args = parser_post.parse_args()
     db_catalog = query_catalog_by_id(args.catalog)
     db_tags = query_tags_by_ids(args.tags)
     if not db_catalog:
-        message['catalog'] = '`{0}`查询分类失败'.format(args.catalog)
+        error['catalog'] = '`{0}`查询分类失败'.format(args.catalog)
     if len(db_tags) != len(args.tags):
-        message['tags'] = '`{0}`查询标签失败'.format(args.tags)
-    if message:
-        return bad_request(message)
+        error['tags'] = '`{0}`查询标签失败'.format(args.tags)
+    if error:
+        return bad_request(error)
     args['created_id'] = g.current_user.id
     args['catalog'] = db_catalog
     args['tags'] = db_tags
     created, post = create_post(**args)
     if(created):
         return jsonify(marshal(post, post_fields))
-    return jsonify({'message': {'title': '标题已存在'}, 'error': 'already existed'})
+    return jsonify({'error': {'title': '标题已存在'}, 'message': 'already existed'})
 
 
 @admin_api.route('/post', methods=["GET"])
 def list_posts():
-    posts = query_posts()
-    return jsonify(marshal(posts, post_fields))
+    page_args = parser_pagination.parse_args()
+    posts = query_posts(**page_args)
+    total = total_posts()
+    page_args['total'] = total
+    return jsonify(paging(marshal(posts, post_fields), **page_args))
 
 
 @admin_api.route('/post/<int:id>', methods=["GET"])

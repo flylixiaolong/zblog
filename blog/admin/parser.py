@@ -27,3 +27,9 @@ parser_post.add_argument('summary', required=True, trim=True)
 parser_post.add_argument('content', required=True, trim=True)
 parser_post.add_argument('catalog', required=True, type=int)
 parser_post.add_argument('tags', type=int, action='append')
+
+# 分页参数
+parser_pagination = reqparse.RequestParser()
+parser_pagination.add_argument('offset', type=int, location='args', default=0, help='offset is the first index of item')
+parser_pagination.add_argument('limit', type=int, location='args', default=10, help='limit is the max number for request')
+

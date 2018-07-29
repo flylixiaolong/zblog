@@ -64,6 +64,10 @@ def create_post(title, summary, content, created_id, catalog, tags):
     db.session.commit()
     return True, post
 
-def query_posts():
-    posts = db.session.query(Post).all()
+def query_posts(limit=10, offset=0):
+    posts = db.session.query(Post).limit(limit).offset(offset).all()
     return posts
+
+def total_posts():
+    count = db.session.query(Post).count()
+    return count

@@ -1,4 +1,4 @@
-"""参数校验函数
+"""通用工具函数模块
 
 Copyright (C) 2018 fly_lxl@foxmail.com
 CreatedAt 2018-07-19
@@ -14,3 +14,15 @@ def email(email_str):
         return email_str
     else:
         raise ValueError('{} is not a valid email'.format(email_str))
+
+def paging(data, limit, offset, total):
+    """对数据列表添加分页信息"""
+    return {
+        'data': data,
+        'page': {
+            'limit': limit,
+            'offset': offset,
+            'total': total,
+            'count': len(data)
+        }
+    }

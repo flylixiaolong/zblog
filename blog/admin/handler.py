@@ -15,10 +15,18 @@ def before_request():
 def after_request(response):
     if response.is_json:
         data = response.get_json()
+        ret = {}
         if isinstance(data, (tuple, list, set)) or not data.get('error', None):
-            ret = {'data': data}
-            ret['success'] = 'response ok'
-            return jsonify(ret)
+            if('data' not in data):
+                ret['data'] = data
+            else:
+                ret = data
+            ret['meta'] = {
+                'message':'response ok'
+            }
+        else:
+            ret['meta'] = data
+        return jsonify(ret)
     return response
 
 # 400错误处理

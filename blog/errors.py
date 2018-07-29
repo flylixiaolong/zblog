@@ -1,23 +1,23 @@
 from flask import jsonify
 
-def bad_request(message):
-    response = jsonify({'error': 'bad request', 'message': message})
+def bad_request(error):
+    response = jsonify({'message': 'bad request', 'error': error})
     response.status_code = 400
     return response
 
 
-def unauthorized(message):
-    response = jsonify({'error': 'unauthorized', 'message': message})
+def unauthorized(error):
+    response = jsonify({'message': 'unauthorized', 'error': error})
     response.status_code = 401
     return response
 
 
-def forbidden(message):
-    response = jsonify({'error': 'forbidden', 'message': message})
+def forbidden(error):
+    response = jsonify({'message': 'forbidden', 'error': error})
     response.status_code = 403
     return response
 
-def not_found(message):
-    response = jsonify({'error': 'not found', 'message': message})
+def not_found(error):
+    response = jsonify({'message': 'not found', 'error': error})
     response.status_code = 404
     return response
