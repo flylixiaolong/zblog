@@ -88,9 +88,6 @@ def new_post():
         message['catalog'] = '`{0}`查询分类失败'.format(args.catalog)
     if len(db_tags) != len(args.tags):
         message['tags'] = '`{0}`查询标签失败'.format(args.tags)
-    db_post = query_post_by_title(args.title)
-    if db_post:
-        message['title'] = '标题已存在'
     if message:
         return bad_request(message)
     args['created_id'] = g.current_user.id
@@ -99,7 +96,7 @@ def new_post():
     created, post = create_post(**args)
     if(created):
         return jsonify(marshal(post, post_fields))
-    return jsonify({'message': {'post': '分类已经存在'}, 'error': 'already existed'})
+    return jsonify({'message': {'title': '标题已存在'}, 'error': 'already existed'})
 
 
 @admin_api.route('/post', methods=["GET"])
