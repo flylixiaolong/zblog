@@ -121,6 +121,7 @@ class Comment(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     post = db.relationship('Post', back_populates='comments')
+    reply = db.relationship('Comment', uselist=False)
 
 
 post_tags = db.Table('post_tags',

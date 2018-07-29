@@ -26,7 +26,9 @@ def after_request(response):
             }
         else:
             ret['meta'] = data
-        return jsonify(ret)
+        ret = jsonify(ret)
+        ret.status_code = response.status_code
+        response = ret
     return response
 
 # 400错误处理

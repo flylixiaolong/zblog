@@ -72,14 +72,25 @@ def total_posts():
     count = db.session.query(Post).count()
     return count
 
-def create_comment(name, email, content, post, reply=null):
-    db_comment = query_comment_by_title(title)
-    if db_comment:
-        return False, db_comment
-    comment = Comment(name=name, email=email, content=content, reply=reply)
+def query_comment_by_id(id):
+    comment = db.session.query(Comment).get(id)
+    return comment
+
+def create_comment(name, email, content, post, reply=None):
+    error = {}
+    db_post = query_post_by_id(post)
+    if(not db_post):
+        error['post'] = '`{0}`没找到相应的文章'.format(post)
+    if(reply):
+        db_reply = query_comment_by_id(reply)
+        if(not db_reply):
+            error['reply'] = '`{0}`没找到相应的评论'.format(reply)
+    if(error):
+        return error, None
+    comment = Comment(name=name, email=email, content=content, post=db_post, reply=db_reply)
     db.session.add(comment)
     db.session.commit()
-    return True, comment
+    return None, comment
 
 def query_comments(limit=10, offset=0):
     comments = db.session.query(Comment).limit(limit).offset(offset).all()
