@@ -1,4 +1,4 @@
-from ..models import Admin, Catalog, Tag, Post
+from ..models import Admin, Catalog, Tag, Post, Comment
 from .. import db
 
 def query_catalog_by_name(catalog):
@@ -70,4 +70,21 @@ def query_posts(limit=10, offset=0):
 
 def total_posts():
     count = db.session.query(Post).count()
+    return count
+
+def create_comment(name, email, content, post, reply=null):
+    db_comment = query_comment_by_title(title)
+    if db_comment:
+        return False, db_comment
+    comment = Comment(name=name, email=email, content=content, reply=reply)
+    db.session.add(comment)
+    db.session.commit()
+    return True, comment
+
+def query_comments(limit=10, offset=0):
+    comments = db.session.query(Comment).limit(limit).offset(offset).all()
+    return comments
+
+def total_comments():
+    count = db.session.query(Comment).count()
     return count

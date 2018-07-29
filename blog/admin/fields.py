@@ -28,3 +28,11 @@ post_fields = {
     'created_at': fields.DateTime(dt_format='iso8601'),
     'updated_at': fields.DateTime(dt_format='iso8601')
 }
+
+
+comment_fields = {
+    'id': fields.Integer,
+    'name': fields.String,
+    'email': fields.String,
+    'content': fields.String
+}

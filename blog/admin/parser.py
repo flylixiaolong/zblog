@@ -33,3 +33,10 @@ parser_pagination = reqparse.RequestParser()
 parser_pagination.add_argument('offset', type=int, location='args', default=0, help='offset is the first index of item')
 parser_pagination.add_argument('limit', type=int, location='args', default=10, help='limit is the max number for request')
 
+# 评论参数
+parser_comment = reqparse.RequestParser()
+parser_comment.add_argument('name', required=True, trim=True)
+parser_comment.add_argument('email', required=True, trim=True, type=email)
+parser_comment.add_argument('content', required=True, trim=True)
+parser_comment.add_argument('reply', type=int)
+parser_comment.add_argument('post', type=int, required=True)

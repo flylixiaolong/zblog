@@ -1,17 +1,16 @@
 from flask import Blueprint, jsonify
 from flask import g, request, json
 from flask_login import login_user
-from flask_restful import marshal, fields
+from flask_restful import marshal
 from .auth import multi_auth
-from .fields import catalog_fields
-from .fields import tag_fields
-from .fields import post_fields
+from .fields import catalog_fields, tag_fields
+from .fields import post_fields, comment_fields
 from .service import create_catalog, query_catalogs, query_catalog_by_id
 from .service import create_tag, query_tags, query_tags_by_ids, query_tag_by_id
 from .service import create_post, query_posts, query_post_by_id, query_post_by_title
 from .service import total_posts
 from .parser import parser_catalog, parser_account, parser_pagination
-from .parser import parser_tag, parser_post
+from .parser import parser_tag, parser_post, parser_comment
 from ..models import Admin
 from ..utils import paging
 from ..errors import unauthorized, not_found, bad_request
@@ -116,3 +115,29 @@ def get_post(id):
     if(not post):
         return not_found('资源不存在')
     return jsonify(marshal(post, post_fields))
+
+
+@admin_api.route('/comment', methods=["POST"])
+def new_comment():
+    args = parser_comment.parse_args()
+    error, comment = create_comment(**args)
+    if(error):
+        return bad_request(error)
+    return jsonify(marshal(comment, comment_fields))
+
+
+@admin_api.route('/comment', methods=["GET"])
+def list_comments():
+    page_args = parser_pagination.parse_args()
+    comments = query_comments(**page_args)
+    total = total_comments()
+    page_args['total'] = total
+    return jsonify(paging(marshal(comments, comment_fields), **page_args))
+
+
+@admin_api.route('/comment/<int:id>', methods=["GET"])
+def get_comment(id):
+    comment = query_comment_by_id(id)
+    if(not comment):
+        return not_found('资源不存在')
+    return jsonify(marshal(comment, comment_fields))
