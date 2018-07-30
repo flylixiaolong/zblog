@@ -9,6 +9,7 @@ from .service import create_catalog, query_catalogs, query_catalog_by_id
 from .service import create_tag, query_tags, query_tags_by_ids, query_tag_by_id
 from .service import create_post, query_posts, query_post_by_id, query_post_by_title
 from .service import total_posts, create_comment, total_comments, query_comments
+from .service import query_comment_by_id
 from .parser import parser_catalog, parser_account, parser_pagination
 from .parser import parser_tag, parser_post, parser_comment
 from ..models import Admin
@@ -133,7 +134,7 @@ def list_comments(post_id):
     page_args = parser_pagination.parse_args()
     db_post = query_post_by_id(post_id)
     if(not db_post):
-        error['post'] = '`{0}`没找到相应的文章'.format(post)
+        error['post'] = '`{0}`没找到相应的文章'.format(post_id)
     if error:
         return bad_request(error)
     comments = query_comments(db_post, **page_args)
@@ -144,7 +145,13 @@ def list_comments(post_id):
 
 @admin_api.route('/post/<int:post_id>/comment/<int:id>', methods=["GET"])
 def get_comment(post_id, id):
+    error = {}
+    db_post = query_post_by_id(post_id)
+    if(not db_post):
+        error['post'] = '`{0}`没找到相应的文章'.format(post_id)
     comment = query_comment_by_id(id)
     if(not comment):
-        return not_found('资源不存在')
+        error['comment'] = '`{0}`没有找到评论'.format(id)
+    if error:
+        return bad_request(error)
     return jsonify(marshal(comment, comment_fields))
