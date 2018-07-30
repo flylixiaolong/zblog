@@ -8,7 +8,7 @@ from .fields import post_fields, comment_fields
 from .service import create_catalog, query_catalogs, query_catalog_by_id
 from .service import create_tag, query_tags, query_tags_by_ids, query_tag_by_id
 from .service import create_post, query_posts, query_post_by_id, query_post_by_title
-from .service import total_posts, create_comment
+from .service import total_posts, create_comment, total_comments, query_comments
 from .parser import parser_catalog, parser_account, parser_pagination
 from .parser import parser_tag, parser_post, parser_comment
 from ..models import Admin
@@ -127,17 +127,23 @@ def new_comment():
     return jsonify(marshal(comment, comment_fields))
 
 
-@admin_api.route('/comment', methods=["GET"])
-def list_comments():
+@admin_api.route('/post/<int:post_id>/comment', methods=["GET"])
+def list_comments(post_id):
+    error = {}
     page_args = parser_pagination.parse_args()
-    comments = query_comments(**page_args)
-    total = total_comments()
+    db_post = query_post_by_id(post_id)
+    if(not db_post):
+        error['post'] = '`{0}`没找到相应的文章'.format(post)
+    if error:
+        return bad_request(error)
+    comments = query_comments(db_post, **page_args)
+    total = total_comments(db_post)
     page_args['total'] = total
     return jsonify(paging(marshal(comments, comment_fields), **page_args))
 
 
-@admin_api.route('/comment/<int:id>', methods=["GET"])
-def get_comment(id):
+@admin_api.route('/post/<int:post_id>/comment/<int:id>', methods=["GET"])
+def get_comment(post_id, id):
     comment = query_comment_by_id(id)
     if(not comment):
         return not_found('资源不存在')

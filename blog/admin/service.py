@@ -92,10 +92,10 @@ def create_comment(name, email, content, post, reply=None):
     db.session.commit()
     return None, comment
 
-def query_comments(limit=10, offset=0):
-    comments = db.session.query(Comment).limit(limit).offset(offset).all()
+def query_comments(post, limit=10, offset=0):
+    comments = db.session.query(Comment).filter(Comment.post==post).limit(limit).offset(offset).all()
     return comments
 
-def total_comments():
-    count = db.session.query(Comment).count()
+def total_comments(post):
+    count = db.session.query(Comment).filter(Comment.post==post).count()
     return count
