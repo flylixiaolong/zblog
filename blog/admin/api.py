@@ -11,7 +11,7 @@ from .service import create_post, query_posts, query_post_by_id, query_post_by_t
 from .service import total_posts, create_comment, total_comments, query_comments
 from .service import query_comment_by_id
 from .parser import parser_catalog, parser_account, parser_pagination
-from .parser import parser_tag, parser_post, parser_comment
+from .parser import parser_tag, parser_post, parser_comment, parser_comment1
 from ..models import Admin
 from ..utils import paging
 from ..errors import unauthorized, not_found, bad_request
@@ -122,6 +122,16 @@ def get_post(id):
 @admin_api.route('/comment', methods=["POST"])
 def new_comment():
     args = parser_comment.parse_args()
+    error, comment = create_comment(**args)
+    if(error):
+        return bad_request(error)
+    return jsonify(marshal(comment, comment_fields))
+
+
+@admin_api.route('/post/<int:post_id>/comment', methods=["POST"])
+def new_comment1(post_id):
+    args = parser_comment1.parse_args()
+    args['post'] = post_id
     error, comment = create_comment(**args)
     if(error):
         return bad_request(error)

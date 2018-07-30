@@ -40,3 +40,10 @@ parser_comment.add_argument('email', required=True, trim=True, type=email)
 parser_comment.add_argument('content', required=True, trim=True)
 parser_comment.add_argument('reply', type=int)
 parser_comment.add_argument('post', type=int, required=True)
+
+# 评论参数
+parser_comment1 = reqparse.RequestParser()
+parser_comment1.add_argument('name', required=True, trim=True)
+parser_comment1.add_argument('email', required=True, trim=True, type=email)
+parser_comment1.add_argument('content', required=True, trim=True)
+parser_comment1.add_argument('reply', type=int)
